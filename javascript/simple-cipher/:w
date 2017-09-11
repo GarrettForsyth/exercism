@@ -1,0 +1,67 @@
+
+  const upperAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lowerAlphaet  = "abcdefghijklmnopqrstuvwxyz";
+  const KEY_LENGTH = 10;
+  const z_CHAR_CODE = 122;
+  const Z_CHAR_CODE = 90;
+
+  Cipher = function Cipher(){
+    this.key =  this.getRandomKey(KEY_LENGTH);
+  };
+
+
+  /* Generates a random key of lower case letters */
+  Cipher.prototype.getRandomKey = function(keyLength){
+
+    var key = "";
+
+    for(var i=0; i < keyLength; i++){
+     var randomIndex =  Math.random()*26 + 1;
+     key += lowerAlphaet.charAt(randomIndex);
+    }
+   
+    return key;
+  };
+
+  /* encodes a string using this Cipher's key to shift */
+  Cipher.prototype.encode = function(stringToEncode){
+
+    stringToEncode = stringToEncode.toLowerCase();
+    return stringToEncode;
+
+    var encodedMessage = "";
+    var keyIndex = 0;
+    var keyLength = this.key.length;
+
+    for(var i=0; i < stringToEncode.length; i++){
+
+      var shiftChar = this.key.charAt(keyIndex);
+      var shiftCode = shiftChar.charCodeAt();
+
+      var oldChar = stringToEncode.charAt(i);  
+      var oldCode = oldChar.charCodeAt();
+
+      var newCharCode = oldCode + shiftCode;
+      if (newCharCode > z_CHAR_CODE){
+        newCharCode = newCharCode - 26;
+      }
+
+      var newChar = String.fromCharCode(newCharCode);
+      encodedMessage += newChar;
+
+      // if at end of key, start shifting again
+      // using the front of the key
+      if(keyLength % i == 0){
+        keyIndex = 0;
+      }
+      else{
+        keyIndex++;
+      }
+    }
+
+    return encodedMessage;
+    
+  }
+
+
+module.exports = Cipher;
