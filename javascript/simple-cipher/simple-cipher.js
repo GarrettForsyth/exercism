@@ -64,7 +64,6 @@
       // if at end of key, start shifting again
       // using the front of the key
       if((i+1)%keyLength == 0){
-        keyIndex = 0;
       }
       else{
         keyIndex++;
